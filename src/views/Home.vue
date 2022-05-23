@@ -1,13 +1,20 @@
 <template>
   <div class="home">
     <h1>This is a table with some important data</h1>
-    <b-table :data="tableData" :columns="columns"></b-table>
+    <b-table :data="tableData" :columns="columns">
+      <template slot="footer">
+        <td>Total</td>
+        <td></td>
+        <td>aaa</td>
+        <td></td>
+      </template>
+    </b-table>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-import { TableData } from "@/types/types";
+import {Component, Vue} from "vue-property-decorator";
+import {TableData} from "@/types/types";
 
 @Component
 export default class Home extends Vue {
@@ -39,24 +46,30 @@ export default class Home extends Vue {
   // mounted works fine if your ide complains about it
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   mounted() {
-    this.getData()
-      .then((data: TableData[]) => {
-        this.loading = true;
-        return data.map((dataItem: TableData) => {
-          return {
-            ...dataItem,
-            randomNumber: Math.random(),
-          };
-        });
-      })
-      .then((data: TableData[]) => {
-        this.tableData = data;
-        this.loading = false;
-      })
-      .catch((error) => {
-        console.log(error, "This is not good");
-      });
+    this.setData()
   }
+
+  async setData() {
+    this.loading = true
+    const response = await this.getData()
+    if (!response) console.log("This is not good")
+    this.tableData = response.map((dataItem: TableData) => {
+      return {
+        ...dataItem,
+        randomNumber: Math.random(),
+      }
+    })
+    // await this.getTotal()
+    this.loading = false
+  }
+
+  // async getTotal() {
+  //   let sum = 0
+  //   for (let item of this.tableData) {
+  //     sum += item.authorizedAmount
+  //   }
+  //   console.log(sum)
+  // }
 
   async getData(): Promise<TableData[]> {
     return [
