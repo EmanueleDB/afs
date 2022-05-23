@@ -3,10 +3,11 @@
     <h1>This is a table with some important data</h1>
     <b-table :data="tableData" :columns="columns">
       <template slot="footer">
-        <td>Total</td>
-        <td></td>
-        <td>aaa</td>
-        <td></td>
+        <td>{{ totals.name }}</td>
+        <td>{{ totals.totAuthorizedAmount }}</td>
+        <td>{{ totals.totIssuedAmount }}</td>
+        <td>{{ totals.totAuthorizedCapital }}</td>
+        <td>{{ totals.totIssuedCapital }}</td>
       </template>
     </b-table>
   </div>
@@ -42,6 +43,13 @@ export default class Home extends Vue {
     },
   ];
   loading = false;
+  totals = {
+    name: 'Total',
+    totAuthorizedAmount: 0,
+    totIssuedAmount: 0,
+    totAuthorizedCapital: 0,
+    totIssuedCapital: 0,
+  };
 
   // mounted works fine if your ide complains about it
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
@@ -59,17 +67,18 @@ export default class Home extends Vue {
         randomNumber: Math.random(),
       }
     })
-    // await this.getTotal()
+    await this.getTotal()
     this.loading = false
   }
 
-  // async getTotal() {
-  //   let sum = 0
-  //   for (let item of this.tableData) {
-  //     sum += item.authorizedAmount
-  //   }
-  //   console.log(sum)
-  // }
+  async getTotal() {
+    for (let item of this.tableData) {
+      this.totals.totAuthorizedAmount += item.authorizedAmount
+      this.totals.totIssuedAmount += item.issuedAmount
+      this.totals.totAuthorizedCapital += item.authorizedCapital
+      this.totals.totIssuedCapital += item.issuedCapital
+    }
+  }
 
   async getData(): Promise<TableData[]> {
     return [
@@ -113,3 +122,9 @@ export default class Home extends Vue {
   }
 }
 </script>
+
+<style lang="css">
+.table-footer {
+  font-weight: bold;
+}
+</style>
