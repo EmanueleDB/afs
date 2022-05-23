@@ -2,52 +2,48 @@
   <div class="transfers">
     <h1 class="title is-1">Transfers</h1>
     <label
-      >Search
-      <input v-model="searchTerms" />
+    >Search
+      <input v-model="searchTerms" type="date"/>
     </label>
     <div>
       <button class="edit-btn" @click="updateTransfers">
         Update transfers
       </button>
-      <transfer-row
-        :key="transfer.transactionIdentifier"
-        v-for="transfer in searchedTransfers"
-        :transfer="transfer"
+      <TransferRow
+          :key="transfer.transactionIdentifier"
+          v-for="transfer in searchedTransfers"
+          :transfer="transfer"
       />
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-import { Transaction } from "@/types/types";
+import {Component, Vue} from "vue-property-decorator";
+import {Transaction} from "@/types/types";
 import TransferRow from "@/components/transferRow.vue";
 import transfers from "@/assets/data";
+
 @Component({
   name: "Transfers",
-  components: { TransferRow },
+  components: {TransferRow},
 })
 export default class Transfers extends Vue {
   searchTerms = "";
   transfers = transfers;
+
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   get searchedTransfers() {
     if (this.searchTerms) {
       // custom search, should be improved upon
-      const searchArray: Transaction[] = [];
-      this.transfers.forEach((transfer: Transaction) => {
-        if (
-          transfer.type.toLowerCase().includes(this.searchTerms.toLowerCase())
-        ) {
-          searchArray.push(transfer);
-        }
-      });
-      return searchArray;
+      return this.transfers.filter((transfer: Transaction) => transfer.recordDate?.includes(this.searchTerms))
     }
     return this.transfers;
   }
 
-  updateTransfers(): void {
+  updateTransfers()
+      :
+      void {
     this.transfers.forEach((transfer) => {
       transfer.forgottenProperty = `Important data: ${(Math.random() * 100000000).toString().slice(1, 8)}`;
     });
@@ -61,7 +57,7 @@ export default class Transfers extends Vue {
       pricePerShare: null,
       recordDate: "2021-07-01",
       securityClassId: "ab983cfe-a932-4e25-98ea-f5928a839fe1",
-      securityClass: { name: "Common" },
+      securityClass: {name: "Common"},
       state: "OLD",
       toSecurityHolderId: "dd971e7f-386b-45dd-93e1-666fbeed0a55",
       toSecurityHolder: {
