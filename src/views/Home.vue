@@ -83,10 +83,10 @@ export default class Home extends Vue {
 
   async getTotal() {
     for (let item of this.tableData) {
-      this.totals.totAuthorizedAmount += item.authorizedAmount
-      this.totals.totIssuedAmount += item.issuedAmount
-      this.totals.totAuthorizedCapital += item.authorizedCapital
-      this.totals.totIssuedCapital += item.issuedCapital
+      this.totals.totAuthorizedAmount += parseInt(item.authorizedAmount.toString())
+      this.totals.totIssuedAmount += parseInt(item.issuedAmount.toString())
+      this.totals.totAuthorizedCapital += parseInt(item.authorizedCapital.toString())
+      this.totals.totIssuedCapital += parseInt(item.issuedCapital.toString())
     }
   }
 

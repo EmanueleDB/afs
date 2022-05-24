@@ -1,8 +1,9 @@
 <template>
   <transition name="modal">
     <div class="modal-mask">
-      <div class="modal-wrapper" @click="$emit('close')">
+      <div class="modal-wrapper">
         <div class="modal-container">
+          <button class="close-button" @click.stop="$emit('close')">x</button>
 
           <div class="modal-header">
             <slot name="header">
@@ -44,9 +45,9 @@
   </transition>
 </template>
 
-<script>
+<script lang="ts">
 import Vue from "vue";
-import { Component } from "vue-property-decorator";
+import {Component} from "vue-property-decorator";
 
 @Component({
   name: "AddClassModal",
@@ -64,10 +65,6 @@ export default class AddClassModal extends Vue {
   }
 
   addClass() {
-    this.securityClass.authorizedAmount = parseInt(this.securityClass.authorizedAmount)
-    this.securityClass.issuedAmount = parseInt(this.securityClass.issuedAmount)
-    this.securityClass.authorizedCapital = parseInt(this.securityClass.authorizedCapital)
-    this.securityClass.issuedCapital = parseInt(this.securityClass.issuedCapital)
     this.$emit('newClass', this.securityClass)
     this.$emit('close')
   }
@@ -100,6 +97,19 @@ export default class AddClassModal extends Vue {
   }
 }
 
+.close-button {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  top: -35px;
+  right: -10px;
+  border-radius: 50%;
+  &:hover {
+    background-color: #808080;
+    color: #fff;
+  }
+}
+
 .modal-mask {
   position: fixed;
   z-index: 9998;
@@ -118,6 +128,7 @@ export default class AddClassModal extends Vue {
 }
 
 .modal-container {
+  position: relative;
   width: 400px;
   margin: 0 auto;
   padding: 20px 30px;
