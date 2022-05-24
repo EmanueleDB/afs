@@ -1,6 +1,8 @@
 <template>
   <div class="home">
     <h1>This is a table with some important data</h1>
+    <button @click="showModal = true">New Class</button>
+    <AddClassModal v-if="showModal" @close="showModal = false" @newClass="setNewClass"/>
     <b-table :data="tableData" :columns="columns">
       <template slot="footer">
         <td>{{ totals.name }}</td>
@@ -16,8 +18,12 @@
 <script lang="ts">
 import {Component, Vue} from "vue-property-decorator";
 import {TableData} from "@/types/types";
+import AddClassModal from '../utilities/AddClassModal.vue'
 
-@Component
+@Component({
+  components: {AddClassModal},
+})
+
 export default class Home extends Vue {
   tableData: TableData[] = [];
   columns = [
@@ -50,7 +56,7 @@ export default class Home extends Vue {
     totAuthorizedCapital: 0,
     totIssuedCapital: 0,
   };
-
+  showModal = false
   // mounted works fine if your ide complains about it
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   mounted() {
@@ -59,17 +65,21 @@ export default class Home extends Vue {
 
   async setData() {
     this.loading = true
-    const response = await this.getData()
-    if (!response) console.log("This is not good")
-    this.tableData = response.map((dataItem: TableData) => {
-      return {
-        ...dataItem,
-        randomNumber: Math.random(),
-      }
-    })
-    await this.getTotal()
-    this.loading = false
+    try {
+      const response = await this.getData()
+      this.tableData = response.map((dataItem: TableData) => {
+        return {
+          ...dataItem,
+          randomNumber: Math.random(),
+        }
+      })
+      await this.getTotal()
+      this.loading = false
+    } catch (e) {
+      console.log(e, "This is not good")
+    }
   }
+
 
   async getTotal() {
     for (let item of this.tableData) {
@@ -78,6 +88,15 @@ export default class Home extends Vue {
       this.totals.totAuthorizedCapital += item.authorizedCapital
       this.totals.totIssuedCapital += item.issuedCapital
     }
+  }
+
+  setNewClass(newClass: TableData) {
+    this.totals.totAuthorizedAmount = 0
+    this.totals.totIssuedAmount = 0
+    this.totals.totAuthorizedCapital = 0
+    this.totals.totIssuedCapital = 0
+    this.tableData.push(newClass)
+    this.getTotal()
   }
 
   async getData(): Promise<TableData[]> {
@@ -123,7 +142,7 @@ export default class Home extends Vue {
 }
 </script>
 
-<style lang="css">
+<style lang="scss">
 .table-footer {
   font-weight: bold;
 }
