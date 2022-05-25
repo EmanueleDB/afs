@@ -3,17 +3,21 @@
     <h1 class="title is-1">Transfers</h1>
     <label
     >Search
-      <input v-model="searchTerms" type="date"/>
+      <input v-model="searchTerms" type="text"/>
     </label>
     <div>
       <button class="edit-btn" @click="updateTransfers">
         Update transfers
       </button>
-      <TransferRow
-          :key="transfer.transactionIdentifier"
-          v-for="transfer in searchedTransfers"
-          :transfer="transfer"
-      />
+      <div class="card-container">
+        <TransferRow
+            v-for="(transfer, index) in searchedTransfers"
+            :key="transfer.transactionIdentifier"
+            :transfer="transfer"
+            :color="colors[index % colors.length]"
+            :class="colors[index % colors.length]"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -31,23 +35,17 @@ import transfers from "@/assets/data";
 export default class Transfers extends Vue {
   searchTerms = "";
   transfers = transfers;
+  colors = ['green', 'purple', 'orange', 'red', 'pink'];
+
 
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   get searchedTransfers() {
-    if (this.searchTerms) {
-      // custom search, should be improved upon
+    if (this.searchTerms)
       return this.transfers.filter((transfer: Transaction) => transfer.recordDate?.includes(this.searchTerms))
-    }
     return this.transfers;
   }
 
-  updateTransfers()
-      :
-      void {
-    this.transfers.forEach((transfer) => {
-      transfer.forgottenProperty = `Important data: ${(Math.random() * 100000000).toString().slice(1, 8)}`;
-    });
-
+  updateTransfers(): void {
     this.transfers[0] = {
       splitFactor: null,
       exDate: null,
@@ -68,11 +66,28 @@ export default class Transfers extends Vue {
       positionWithinDay: 3,
       type: "ISSUE_STOCK",
     };
+    this.transfers.forEach((transfer) => {
+      transfer.forgottenProperty = `Important data: ${(Math.random() * 100000000).toString().slice(1, 8)}`;
+    });
+
   }
 }
 </script>
 <style scoped lang="scss">
+$colors: purple, pink, red, orange, green;
 .edit-btn {
   margin: 2rem;
+}
+
+.card-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+@each $color in $colors {
+  .#{$color} {
+    border-left: 10px solid $color;
+  }
 }
 </style>

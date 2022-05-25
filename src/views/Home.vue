@@ -63,10 +63,10 @@ export default class Home extends Vue {
     this.setData()
   }
 
-  async setData() {
-    this.loading = true
+  async setData(): Promise<void> {
     try {
       const response = await this.getData()
+      this.loading = true
       this.tableData = response.map((dataItem: TableData) => {
         return {
           ...dataItem,
@@ -81,7 +81,7 @@ export default class Home extends Vue {
   }
 
 
-  async getTotal() {
+  async getTotal(): Promise<void> {
     for (let item of this.tableData) {
       this.totals.totAuthorizedAmount += parseInt(item.authorizedAmount.toString())
       this.totals.totIssuedAmount += parseInt(item.issuedAmount.toString())
@@ -90,7 +90,7 @@ export default class Home extends Vue {
     }
   }
 
-  setNewClass(newClass: TableData) {
+  setNewClass(newClass: TableData): void {
     this.totals.totAuthorizedAmount = 0
     this.totals.totIssuedAmount = 0
     this.totals.totAuthorizedCapital = 0

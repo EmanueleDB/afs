@@ -64,7 +64,7 @@ export default class AddClassModal extends Vue {
     issuedCapital: 0,
   }
 
-  addClass() {
+  addClass(): void {
     this.$emit('newClass', this.securityClass)
     this.$emit('close')
   }
