@@ -10,11 +10,11 @@
           <div class="circle" :style="'border: 1px solid ' + color + ';'"></div>
         </div>
         <div class="box-text">
-          <div>
-            <p>{{ transfer.type }}</p>
+          <div style="position: relative">
+            <p style="position: absolute; top: -7px">{{ transfer.type }}</p>
           </div>
-          <div>
-            <p>{{ transfer.forgottenProperty }}</p>
+          <div style="position: relative; width: 200px; height: 30px">
+            <p style="position: absolute; bottom: -7px">{{ transfer.forgottenProperty }}</p>
           </div>
         </div>
       </div>
@@ -55,7 +55,7 @@ export default class TransferRow extends Vue {
   position: relative;
   width: 400px;
   height: 200px;
-  border: 1px solid gray;
+  border: 1px solid lightgray;
   border-radius: 10px;
   margin: 1rem;
   padding: 15px;
@@ -85,7 +85,7 @@ export default class TransferRow extends Vue {
 
   .line {
     width: 0;
-    height: 40px;
+    height: 30px;
     margin: 2px 0;
   }
 
