@@ -22,21 +22,33 @@
       </div>
     </div>
     <div class="card__body">
-      <p>Date</p>
-      <p>Position Within Day</p>
-      <p>State</p>
+      <div class="card__body__container">
+        <p>Date</p>
+      </div>
+      <div class="card__body__container">
+        <p>Position</p>
+      </div>
+      <div class="card__body__container">
+        <p>State</p>
+      </div>
     </div>
     <div class="card__footer">
-      <p>{{ transfer.recordDate }}</p>
-      <p>{{ transfer.positionWithinDay }}</p>
-      <p>{{ transfer.state }}</p>
+      <div class="card__footer__container">
+        <p>{{ transfer.recordDate }}</p>
+      </div>
+      <div class="card__body__container">
+        <p>{{ transfer.positionWithinDay }}</p>
+      </div>
+      <div class="card__body__container">
+        <p>{{ transfer.state }}</p>
+      </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
-import {Component, Prop} from "vue-property-decorator";
+import {Component, Watch, Prop} from "vue-property-decorator";
 import {Transaction} from "@/types/types";
 
 @Component({
@@ -47,9 +59,11 @@ export default class TransferRow extends Vue {
   @Prop({required: true}) color!: string;
 
 
-  mounted() {
-    console.log(this.transfer)
-  }
+  // @Watch('transfer')
+  // dataChange(value: string, oldValue: string): void {
+  //   console.log(value)
+  //   console.log(oldValue)
+  // }
 }
 </script>
 
@@ -73,11 +87,21 @@ export default class TransferRow extends Vue {
   &__body {
     display: flex;
     justify-content: space-between;
+
+    &__container {
+      width: 120px;
+      text-align: left;
+    }
   }
 
   &__footer {
     display: flex;
     justify-content: space-between;
+
+    &__container {
+      width: 120px;
+      text-align: left;
+    }
   }
 
   .circle {
