@@ -2,9 +2,11 @@
   <div class="card">
     <div class="card__header">
       <p v-if="transfer.fromSecurityHolder">{{ transfer.fromSecurityHolder }}</p>
-      <p class="card__header__amount">{{ transfer.recordDate }}</p>
+      <div class="card__container" style="width: 40px">
+        <p class="card__header__amount">{{ transfer.amount }}</p>
+      </div>
       <div style="display: flex; flex-direction: row;">
-        <div style="display: flex; flex-direction: column; align-items: center; width: 20px">
+        <div style="display: flex; flex-direction: column; align-items: center; width: 20px; margin-left:40px">
           <div class="circle" :style="'border: 1px solid ' + color + ';'"></div>
           <div class="line" :style="'border: 1px dashed ' + color + ';'"></div>
           <div class="circle" :style="'border: 1px solid ' + color + ';'"></div>
@@ -13,19 +15,19 @@
           <div style="position: relative">
             <p style="position: absolute; top: -7px">{{ transfer.type }}</p>
           </div>
-          <div style="position: relative; width: 200px; height: 30px">
+          <div v-if="transfer.forgottenProperty" style="position: relative; width: 200px; height: 30px">
             <p style="position: absolute; bottom: -7px">{{ transfer.forgottenProperty }}</p>
           </div>
         </div>
       </div>
     </div>
     <div class="card__body">
-      <p>Amount</p>
+      <p>Date</p>
       <p>Position Within Day</p>
       <p>State</p>
     </div>
     <div class="card__footer">
-      <p>{{ transfer.amount }}</p>
+      <p>{{ transfer.recordDate }}</p>
       <p>{{ transfer.positionWithinDay }}</p>
       <p>{{ transfer.state }}</p>
     </div>
@@ -43,6 +45,7 @@ import {Transaction} from "@/types/types";
 export default class TransferRow extends Vue {
   @Prop({required: true}) transfer!: Transaction;
   @Prop({required: true}) color!: string;
+
 
   mounted() {
     console.log(this.transfer)
