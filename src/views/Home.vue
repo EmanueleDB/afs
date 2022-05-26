@@ -65,8 +65,8 @@ export default class Home extends Vue {
 
   async setData(): Promise<void> {
     try {
-      const response = await this.getData()
       this.loading = true
+      const response = await this.getData()
       this.tableData = response.map((dataItem: TableData) => {
         return {
           ...dataItem,
