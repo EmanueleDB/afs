@@ -12,7 +12,7 @@
       <div class="card-container">
         <TransferRow
             v-for="(transfer, index) in searchedTransfers"
-            :key="transfer.transactionIdentifier"
+            :key="index + transfer.transactionIdentifier"
             :transfer="transfer"
             :color="colors[index % colors.length]"
             :class="colors[index % colors.length]"
@@ -23,7 +23,7 @@
 </template>
 
 <script lang="ts">
-import {Component, Vue} from "vue-property-decorator";
+import {Component, Watch, Vue} from "vue-property-decorator";
 import {Transaction} from "@/types/types";
 import TransferRow from "@/components/transferRow.vue";
 import transfers from "@/assets/data";
@@ -32,13 +32,13 @@ import transfers from "@/assets/data";
   name: "Transfers",
   components: {TransferRow},
 })
+
 export default class Transfers extends Vue {
   searchTerms = "";
   transfers = transfers;
   colors = ['green', 'purple', 'orange', 'red', 'pink'];
 
-
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   get searchedTransfers() {
     if (this.searchTerms)
       return this.transfers.filter((transfer: Transaction) => transfer.recordDate?.includes(this.searchTerms))
@@ -46,6 +46,10 @@ export default class Transfers extends Vue {
   }
 
   updateTransfers(): void {
+    this.transfers.forEach((transfer) => {
+      transfer.forgottenProperty = `Important data: ${(Math.random() * 100000000).toString().slice(1, 8)}`;
+    });
+
     this.transfers[0] = {
       splitFactor: null,
       exDate: null,
@@ -66,10 +70,6 @@ export default class Transfers extends Vue {
       positionWithinDay: 3,
       type: "ISSUE_STOCK",
     };
-    this.transfers.forEach((transfer) => {
-      transfer.forgottenProperty = `Important data: ${(Math.random() * 100000000).toString().slice(1, 8)}`;
-    });
-
   }
 }
 </script>
