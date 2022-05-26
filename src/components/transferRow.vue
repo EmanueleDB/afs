@@ -57,7 +57,7 @@ export default class TransferRow extends Vue {
 <style lang="scss">
 .card {
   position: relative;
-  width: 400px;
+  width: 370px;
   height: 180px;
   border: 1px solid lightgray;
   border-radius: 10px;
@@ -66,7 +66,7 @@ export default class TransferRow extends Vue {
   box-shadow: rgba(0, 0, 0, 0.35) 0 5px 15px;
 
   &__container {
-    width: 120px;
+    width: 110px;
     text-align: left;
 
     &__circles {
@@ -117,7 +117,7 @@ export default class TransferRow extends Vue {
   &__header {
     display: flex;
     justify-content: flex-start;
-    margin: 20px 0 40px 0;
+    margin: 10px 0 40px 0;
 
     &__amount {
       font-size: 16px;
@@ -130,7 +130,7 @@ export default class TransferRow extends Vue {
     justify-content: space-between;
 
     &__content {
-      width: 120px;
+      width: 110px;
       text-align: left;
 
       p:first-child {
