@@ -23,7 +23,7 @@
 </template>
 
 <script lang="ts">
-import {Component, Watch, Vue} from "vue-property-decorator";
+import {Component, Vue} from "vue-property-decorator";
 import {Transaction} from "@/types/types";
 import TransferRow from "@/components/transferRow.vue";
 import transfers from "@/assets/data";
@@ -36,7 +36,7 @@ import transfers from "@/assets/data";
 export default class Transfers extends Vue {
   searchTerms = "";
   transfers = transfers;
-  colors = ['green', 'purple', 'orange', 'red', 'pink'];
+  colors = ['purple', 'green', 'orange', 'red', 'pink'];
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   get searchedTransfers() {
@@ -45,12 +45,12 @@ export default class Transfers extends Vue {
     return this.transfers;
   }
 
-  updateTransfers(): void {
-    this.transfers.forEach((transfer) => {
-      transfer.forgottenProperty = `Important data: ${(Math.random() * 100000000).toString().slice(1, 8)}`;
-    });
+  // The button wasn't working properly because Vue 2 cannot detect when you update a single index in an array, so
+  // this.transfers[0] = {...} The array will update, but Vue won't know that anything changed.
+  // So one of the solutions is using splice and that will trigger again the reactivity
 
-    this.transfers[0] = {
+  updateTransfers(): void {
+    this.transfers.splice(0, 0, {
       splitFactor: null,
       exDate: null,
       amount: 10000,
@@ -69,7 +69,11 @@ export default class Transfers extends Vue {
       transactionIdentifier: "41095fdb-6b52-4257-aef8-dc523d782e53",
       positionWithinDay: 3,
       type: "ISSUE_STOCK",
-    };
+    })
+
+    this.transfers.forEach((transfer) => {
+      transfer.forgottenProperty = `Important data: ${(Math.random() * 100000000).toString().slice(1, 8)}`
+    });
   }
 }
 </script>

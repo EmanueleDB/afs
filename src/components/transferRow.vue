@@ -15,7 +15,7 @@
           <div class="card__container__circles__content__first">
             <p class="card__container__circles__content__first-text">{{ transfer.type }}</p>
           </div>
-          <div class="card__container__circles__text__second" v-if="transfer.forgottenProperty">
+          <div class="card__container__circles__content__second" v-if="transfer.forgottenProperty">
             <p class="card__container__circles__content__second-text">
               {{ transfer.forgottenProperty }}</p>
           </div>
@@ -41,7 +41,7 @@
 
 <script lang="ts">
 import Vue from "vue";
-import {Component, Watch, Prop} from "vue-property-decorator";
+import {Component, Prop} from "vue-property-decorator";
 import {Transaction} from "@/types/types";
 
 @Component({
