@@ -12,7 +12,7 @@
       <div class="card-container">
         <TransferRow
             v-for="(transfer, index) in searchedTransfers"
-            :key="index + transfer.transactionIdentifier"
+            :key="transfer.forgottenProperty ? transfer.forgottenProperty : transfer.transactionIdentifier"
             :transfer="transfer"
             :color="colors[index % colors.length]"
             :class="colors[index % colors.length]"
@@ -45,12 +45,15 @@ export default class Transfers extends Vue {
     return this.transfers;
   }
 
-  // The button wasn't working properly because Vue 2 cannot detect when you update a single index in an array, so
-  // this.transfers[0] = {...} The array will update, but Vue won't know that anything changed.
-  // So one of the solutions is using splice and that will trigger again the reactivity
+  // The button wasn't working properly because Vue 2 cannot detect when you update a single index in an array
+  // this.transfers[0] = {...} The array will update, but Vue won't know that anything changed. (Reactivity)
+  // Splice in combination with the new key in the for loop, will make the component re-render
+  // The only property that is new and will make all the items of the array being re-render is the forgottenProperty
+  // but it would be undefined when the component mounts so I set the key to the transactionIdentifier if the forgottenProperty
+  // is not present yet
 
   updateTransfers(): void {
-    this.transfers.splice(0, 0, {
+    this.transfers.splice(0, 1, {
       splitFactor: null,
       exDate: null,
       amount: 10000,
@@ -70,7 +73,6 @@ export default class Transfers extends Vue {
       positionWithinDay: 3,
       type: "ISSUE_STOCK",
     })
-
     this.transfers.forEach((transfer) => {
       transfer.forgottenProperty = `Important data: ${(Math.random() * 100000000).toString().slice(1, 8)}`
     });
