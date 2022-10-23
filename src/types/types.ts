@@ -10,7 +10,7 @@ export type Transaction = {
   positionWithinDay: number | null;
   pricePerShare?: number | null;
   recordDate: string | null;
-  securityClass?: object | null;
+  securityClass?: {[key:string]: any} | null;
   securityClassId: string | null;
   splitFactor?: number | null;
   state: string | null;
